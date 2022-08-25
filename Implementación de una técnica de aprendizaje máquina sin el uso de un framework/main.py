@@ -18,13 +18,13 @@ weights = []
 # Learning rate con default 0.5
 learning_rate = 0.5
 
-def read_txt():
+def read_txt(file):
     """
     Función que lee el archivo de inputs y regresa todas las entradas
     :return: todas las entradas en una lista
     """
     # Procesamos los datos del txt
-    with open('./input.txt') as f:
+    with open(file+'.txt') as f:
         # Lista con todas las lineas del texto parseadas a numero
         entries = []
         for line in f.readlines():
@@ -68,27 +68,29 @@ def calcular_outputs(x_samples, weights):
 def calcular_pesos(weights, x_samples, t_expected, outputs):
     import pandas as pd
     global learning_rate
-    temp_weights = []
-    sample_index = 0
-    temp_weights_x = d = np.empty((len(x_samples), 0)).tolist()
-    df = pd.DataFrame(x_samples)
-    df = df.transpose()
-    df_columns = ['x_' + str(i) for i in range(0,len(x_samples))]
-    weights = pd.DataFrame(weights)
-    weights = weights.transpose()
-    weights_columns = ['w_' + str(i) for i in range(0,len(x_samples))]
-    df = pd.concat([df, weights, pd.DataFrame(t_expected), pd.DataFrame(outputs)], axis=1, ignore_index=True)
-    df.columns = df_columns + weights_columns + ['t','o']
-    for i in range(0, df.shape[0]-1):
-        for j in range(0, df.shape[0]):
-            temp_weights_x[i].append(df['w_'+str(i)][j] + (learning_rate * (df['t'][j] - df['o'][j]) * df['x_'+str(i)][j]))
+    temp_weights_x = np.empty((len(x_samples), 0)).tolist()
+    #df = pd.DataFrame(x_samples)
+    #df = df.transpose()
+    #df_columns = ['x_' + str(i) for i in range(0,len(x_samples))]
+    #weights = pd.DataFrame(weights)
+    #weights = weights.transpose()
+    #weights_columns = ['w_' + str(i) for i in range(0,len(x_samples))]
+    #df = pd.concat([df, weights, pd.DataFrame(t_expected), pd.DataFrame(outputs)], axis=1, ignore_index=True)
+    #df.columns = df_columns + weights_columns + ['t','o']
+    for i in range(0, len(x_samples)):
+        #for j in range(0, df.shape[0]):
+        for j in range(0, len(x_samples[0])):
+            # Python vainilla
+            temp_weights_x[i].append(weights[i][j] + (learning_rate * (t_expected[j] - outputs[j]) * x_samples[i][j]))
+            # Usando dataframes
+            #temp_weights_x[i].append(df['w_'+str(i)][j] + (learning_rate * (df['t'][j] - df['o'][j]) * df['x_'+str(i)][j]))
     return temp_weights_x
 
 
 
 def main():
     # Hacemos el setup inicial
-    entries = read_txt()
+    entries = read_txt(input('Nombre del archivo: '))
     # Colocamos los valores en sus respectivas entradas
     x_samples = entries[0:-2]
     t_expected = entries[-2]
