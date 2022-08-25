@@ -15,15 +15,13 @@ t_expected = []
 outputs = []
 # Lista con los valores de los pesos
 weights = []
-# Lista con los valores del cambio en los pesos
-delta_weights = []
 # Learning rate con default 0.5
 learning_rate = 0.5
 
 def read_txt():
     """
     Función que lee el archivo de inputs y regresa todas las entradas
-    :return:
+    :return: todas las entradas en una lista
     """
     # Procesamos los datos del txt
     with open('./input.txt') as f:
@@ -39,16 +37,19 @@ def read_txt():
                     numbers.append(float(number))
             entries.append(numbers)
     return entries
-        #print(entries)
 
 
 
 def calcular_outputs(x_samples, weights):
+    """
+    Función que calcula los outputs con la función signo
+    :param x_samples: las muestras de x
+    :param weights: los pesos de las muestras
+    :return:
+    """
     outputs = []
     # Calculamos los outputs con nuestra función signo
-    temp_outputs = []
     number_of_samples = len(x_samples)
-    number_of_values = len(x_samples[0])
     sample_index = 0
     for iteration in range(0, len(x_samples[0])):
         temp_list_x = []
@@ -76,27 +77,13 @@ def calcular_pesos(weights, x_samples, t_expected, outputs):
     weights = pd.DataFrame(weights)
     weights = weights.transpose()
     weights_columns = ['w_' + str(i) for i in range(0,len(x_samples))]
-    print(weights)
     df = pd.concat([df, weights, pd.DataFrame(t_expected), pd.DataFrame(outputs)], axis=1, ignore_index=True)
     df.columns = df_columns + weights_columns + ['t','o']
-    print(df)
-
-    print(df.shape[0])
     for i in range(0, df.shape[0]-1):
-        temp_weights_x[i].append(df['w_'+str(i)][i] + (learning_rate * (df['t'][i] - df['o'][i]) * df['x_'+str(i)][i]))
-    print('TEMP NEW WEIGHTS')
-    print(temp_weights_x)
+        for j in range(0, df.shape[0]):
+            temp_weights_x[i].append(df['w_'+str(i)][j] + (learning_rate * (df['t'][j] - df['o'][j]) * df['x_'+str(i)][j]))
+    return temp_weights_x
 
-"""    for sample in range(0, len(x_samples[0])):
-
-        operation = weights[sample][sample_index] + (learning_rate * (t_expected[sample] -
-                            outputs[sample]) * x_samples[sample][sample_index])
-        #operation = weights[i][j] + (learning_rate * (t_expected[i] - outputs[i]) * x_samples[i][j])
-        sample_index += 1
-        temp_weights_x.append(operation)
-    print(temp_weights)
-    weights = temp_weights
-"""
 
 
 def main():
@@ -113,25 +100,26 @@ def main():
     # Inicializamos los cambios en los pesos en ceros
     delta_weights = [[0.0] * num_muestras] * (num_variables_x)
     outputs = calcular_outputs(x_samples, weights)
-    print('Outputs')
-    print(outputs)
-
+    print('=========== DATOS INICIALES ===========')
     print('Muestras x')
     print(x_samples)
     print('Valores esperados')
     print(t_expected)
-    print('Learning rate ', learning_rate)
-    print('Pesos')
+    print('Pesos iniciales')
     print(weights)
-    print('Variación en los pesos ')
-    print(delta_weights)
-    print('Outputs')
+    print('Outputs obtenidos con los pesos')
     print(outputs)
-    print('Vlidar :', outputs != t_expected)
+    print('Learning rate: ', learning_rate)
+    print('========================================')
     # Comenzamos a hacer las corridas hasta que t = o
     if outputs != t_expected:
         while outputs != t_expected:
-            calcular_pesos(weights, x_samples, t_expected, outputs)
+            weights = calcular_pesos(weights, x_samples, t_expected, outputs)
             outputs = calcular_outputs(x_samples,weights)
-
+        print('=========== RESULTADOS ===========')
+        print('Los pesos son: ')
+        print(weights)
+        print('Los outputs recibidos con estos pesos Son:')
+        print(outputs)
+        print('========================================')
 main()
