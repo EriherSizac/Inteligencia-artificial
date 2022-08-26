@@ -17,6 +17,8 @@ outputs = []
 weights = []
 # Learning rate con default 0.5
 learning_rate = 0.5
+# Porcentaje de datos de entrenamiento
+training_data = .6
 
 def read_txt(file):
     """
@@ -40,7 +42,7 @@ def read_txt(file):
 
 
 
-def calcular_outputs(x_samples, weights):
+def calcular_outputs(x, weights):
     """
     Función que calcula los outputs con la función signo
     :param x_samples: las muestras de x
@@ -49,13 +51,13 @@ def calcular_outputs(x_samples, weights):
     """
     outputs = []
     # Calculamos los outputs con nuestra función signo
-    number_of_samples = len(x_samples)
+    number_of_samples = len(x)
     sample_index = 0
-    for iteration in range(0, len(x_samples[0])):
+    for iteration in range(0, len(x[0])):
         temp_list_x = []
         temp_list_w = []
-        for sample in range(0,number_of_samples):
-            temp_list_x.append(x_samples[sample][sample_index])
+        for sample in range(0,number_of_samples-1):
+            temp_list_x.append(x[sample][sample_index])
             temp_list_w.append(weights[sample][sample_index])
         sample_index += 1
         # Sumamos y multiplicamos
@@ -65,10 +67,10 @@ def calcular_outputs(x_samples, weights):
         outputs.append(float(np.sign(temp_sum)))
     return outputs
 
-def calcular_pesos(weights, x_samples, t_expected, outputs):
+def calcular_pesos(weights, x, t_expected, outputs):
     import pandas as pd
     global learning_rate
-    temp_weights_x = np.empty((len(x_samples), 0)).tolist()
+    temp_weights_x = np.empty((len(x), 0)).tolist()
     #df = pd.DataFrame(x_samples)
     #df = df.transpose()
     #df_columns = ['x_' + str(i) for i in range(0,len(x_samples))]
@@ -77,11 +79,11 @@ def calcular_pesos(weights, x_samples, t_expected, outputs):
     #weights_columns = ['w_' + str(i) for i in range(0,len(x_samples))]
     #df = pd.concat([df, weights, pd.DataFrame(t_expected), pd.DataFrame(outputs)], axis=1, ignore_index=True)
     #df.columns = df_columns + weights_columns + ['t','o']
-    for i in range(0, len(x_samples)):
+    for i in range(0, len(x)):
         #for j in range(0, df.shape[0]):
-        for j in range(0, len(x_samples[0])):
+        for j in range(0, len(x[0])):
             # Python vainilla
-            temp_weights_x[i].append(weights[i][j] + (learning_rate * (t_expected[j] - outputs[j]) * x_samples[i][j]))
+            temp_weights_x[i].append(weights[i][j] + (learning_rate * (t_expected[j] - outputs[j]) * x[i][j]))
             # Usando dataframes
             #temp_weights_x[i].append(df['w_'+str(i)][j] + (learning_rate * (df['t'][j] - df['o'][j]) * df['x_'+str(i)][j]))
     return temp_weights_x
@@ -95,16 +97,25 @@ def main():
     x_samples = entries[0:-2]
     t_expected = entries[-2]
     learning_rate = entries[-1]
+
+    # Separamos las muestras de entrenamiento y prueba
+    lim_training = int(len(x_samples)*training_data)
+    print(lim_training)
+    x_training = x_samples[0:lim_training]
+    x_test = x_samples[lim_training:-1]
+    t_training = t_expected[0:lim_training]
+    t_test = t_expected[lim_training:-1]
+
     # Inicializamos los pesos iniciales en 0.1
-    num_muestras = len(x_samples[0])
-    num_variables_x = len(x_samples)
+    num_muestras = len(x_training[0])
+    num_variables_x = len(x_training)
     weights = [[0.1] * num_muestras] * (num_variables_x)
     # Inicializamos los cambios en los pesos en ceros
     delta_weights = [[0.0] * num_muestras] * (num_variables_x)
-    outputs = calcular_outputs(x_samples, weights)
+    outputs = calcular_outputs(x_training, weights)
     print('=========== DATOS INICIALES ===========')
     print('Muestras x')
-    print(x_samples)
+    print(x_training)
     print('Valores esperados')
     print(t_expected)
     print('Pesos iniciales')
@@ -116,12 +127,23 @@ def main():
     # Comenzamos a hacer las corridas hasta que t = o
     if outputs != t_expected:
         while outputs != t_expected:
-            weights = calcular_pesos(weights, x_samples, t_expected, outputs)
-            outputs = calcular_outputs(x_samples,weights)
+            weights = calcular_pesos(weights, x_training, t_expected, outputs)
+            outputs = calcular_outputs(x_training,weights)
         print('=========== RESULTADOS ===========')
         print('Los pesos son: ')
         print(weights)
         print('Los outputs recibidos con estos pesos Son:')
         print(outputs)
         print('========================================')
+    # Probamos las muestras para testing
+    #x_test.insert(0,x_training[0])
+    resultados = calcular_outputs(x_test, weights)
+    print('======== RESULTADOS DEL TESTING =============')
+    import pandas as pd
+    df = pd.DataFrame((x_test)).transpose()
+    #df= df.transpose()
+    #df = pd.concat([df, pd.DataFrame(t_test)], axis=1)
+    #df = pd.concat([df, pd.DataFrame(resultados)], axis=1)
+    print(pd.concat([df, pd.DataFrame(resultados)], axis=1))
+    #print(len(resultados))
 main()
