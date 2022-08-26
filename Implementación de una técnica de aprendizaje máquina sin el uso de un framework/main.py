@@ -4,6 +4,7 @@ Autor: Erick Hernández Silva
 Fecha de creación: 24/08/2022
 Última actualización: 24/08/2022
 """
+import random
 
 import numpy as np
 
@@ -16,9 +17,9 @@ outputs = []
 # Lista con los valores de los pesos
 weights = []
 # Learning rate con default 0.5
-learning_rate = 0.5
+learning_rate = 3
 # Porcentaje de datos de entrenamiento
-training_data = .6
+training_data = .7
 
 def read_txt(file):
     """
@@ -56,7 +57,7 @@ def calcular_outputs(x, weights):
     for iteration in range(0, len(x[0])):
         temp_list_x = []
         temp_list_w = []
-        for sample in range(0,number_of_samples-1):
+        for sample in range(0,number_of_samples):
             temp_list_x.append(x[sample][sample_index])
             temp_list_w.append(weights[sample][sample_index])
         sample_index += 1
@@ -71,14 +72,6 @@ def calcular_pesos(weights, x, t_expected, outputs):
     import pandas as pd
     global learning_rate
     temp_weights_x = np.empty((len(x), 0)).tolist()
-    #df = pd.DataFrame(x_samples)
-    #df = df.transpose()
-    #df_columns = ['x_' + str(i) for i in range(0,len(x_samples))]
-    #weights = pd.DataFrame(weights)
-    #weights = weights.transpose()
-    #weights_columns = ['w_' + str(i) for i in range(0,len(x_samples))]
-    #df = pd.concat([df, weights, pd.DataFrame(t_expected), pd.DataFrame(outputs)], axis=1, ignore_index=True)
-    #df.columns = df_columns + weights_columns + ['t','o']
     for i in range(0, len(x)):
         #for j in range(0, df.shape[0]):
         for j in range(0, len(x[0])):
@@ -91,12 +84,28 @@ def calcular_pesos(weights, x, t_expected, outputs):
 
 
 def main():
+    import pandas as pd
     # Hacemos el setup inicial
     entries = read_txt(input('Nombre del archivo: '))
     # Colocamos los valores en sus respectivas entradas
     x_samples = entries[0:-2]
     t_expected = entries[-2]
     learning_rate = entries[-1]
+
+    # Hacemos un shuffle a las listas
+    df_t = pd.DataFrame(x_samples).transpose()
+    df_t = pd.concat([df_t, pd.DataFrame(t_expected)], axis=1)
+    # Se hace el shuffle y se resetean los indices
+    df_t = df_t.sample(frac=1).reset_index(drop=True)
+
+    # Lo enviamos a las listas de nuevo
+    x_samples = df_t.iloc[:, 0:len(x_samples)].transpose().values.tolist()
+    t_expected = df_t.iloc[:, len(x_samples):].values.tolist()
+    temp = []
+    # Cambiamos nuevamente la lista de valores de t
+    for each in t_expected:
+        temp.append(each[0])
+    t_expected = temp
 
     # Separamos las muestras de entrenamiento y prueba
     lim_training = int(len(x_samples[0])*training_data)
@@ -108,14 +117,12 @@ def main():
     for i in range(0,len(x_samples)):
         for j in range(0,lim_training):
             x_training[i].append(x_samples[i][j])
-            t_training.append(t_expected[j])
         for j in range(lim_training,len(x_samples[0])):
             x_test[i].append(x_samples[i][j])
-            t_test.append(t_expected[j])
-    #x_training = x_samples[0:lim_training]
-    #x_test = x_samples[lim_training:-1]
-    #t_training = t_expected[0:lim_training]
-    #t_test = t_expected[lim_training:-1]
+    for k in range(0, lim_training):
+        t_training.append(t_expected[k])
+        t_test.append(t_expected[k])
+
 
     # Inicializamos los pesos iniciales en 0.1
     num_muestras = len(x_training[0])
@@ -124,37 +131,45 @@ def main():
     # Inicializamos los cambios en los pesos en ceros
     delta_weights = [[0.0] * num_muestras] * (num_variables_x)
     outputs = calcular_outputs(x_training, weights)
-    print('=========== DATOS INICIALES ===========')
-    print('Muestras x')
-    print(x_training)
-    print('Valores esperados')
-    print(t_test)
-    print('Pesos iniciales')
-    print(weights)
-    print('Outputs obtenidos con los pesos')
-    print(outputs)
-    print('Learning rate: ', learning_rate)
-    print('========================================')
     # Comenzamos a hacer las corridas hasta que t = o
     if outputs != t_expected:
-        while outputs != t_expected:
+        while outputs != t_training:
             weights = calcular_pesos(weights, x_training, t_expected, outputs)
             outputs = calcular_outputs(x_training,weights)
-        print('=========== RESULTADOS ===========')
-        print('Los pesos son: ')
-        print(weights)
-        print('Los outputs recibidos con estos pesos Son:')
-        print(outputs)
-        print('========================================')
-    # Probamos las muestras para testing
-    #x_test.insert(0,x_training[0])
-    resultados = calcular_outputs(x_test, weights)
+    res = calcular_outputs(x_test, weights)
+    resultados = []
+    for resultado in res:
+        if resultado == -1.0:
+            resultados.append(0)
+        else:
+            resultados.append(resultado)
     print('======== RESULTADOS DEL TESTING =============')
     import pandas as pd
     df = pd.DataFrame((x_test)).transpose()
-    #df= df.transpose()
-    #df = pd.concat([df, pd.DataFrame(t_test)], axis=1)
-    #df = pd.concat([df, pd.DataFrame(resultados)], axis=1)
-    print(pd.concat([df, pd.DataFrame(resultados)], axis=1))
-    #print(len(resultados))
+    df = df.replace([-1.0], 0.0)
+    df = pd.concat([df, pd.DataFrame(resultados), pd.DataFrame(t_expected[lim_training:]).replace([-1.0], 0.0)], axis=1)
+    columns = []
+    for i in range(len(x_samples)):
+        columns.append('x'+str(i))
+    columns.append('o')
+    columns.append('t')
+    df.columns = columns
+    print(df)
+
+    correctas = 0
+    incorrectas = 0
+    temp = []
+    for esperado in t_expected:
+        if esperado == -1.0:
+            temp.append(0)
+        else:
+            temp.append(esperado)
+    t_expected = temp
+    for i in range(len(resultados)):
+        #print(f'{resultados[i]} == {t_expected[lim_training:][i]} = ')
+        if resultados[i] == t_expected[lim_training:][i]:
+            correctas += 1
+        else:
+            incorrectas += 1
+    print(correctas, ' ', incorrectas, ' ', correctas/incorrectas)
 main()
