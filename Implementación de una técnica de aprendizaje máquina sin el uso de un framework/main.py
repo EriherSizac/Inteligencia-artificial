@@ -99,12 +99,23 @@ def main():
     learning_rate = entries[-1]
 
     # Separamos las muestras de entrenamiento y prueba
-    lim_training = int(len(x_samples)*training_data)
+    lim_training = int(len(x_samples[0])*training_data)
     print(lim_training)
-    x_training = x_samples[0:lim_training]
-    x_test = x_samples[lim_training:-1]
-    t_training = t_expected[0:lim_training]
-    t_test = t_expected[lim_training:-1]
+    x_training = np.empty((len(x_samples), 0)).tolist()
+    x_test = np.empty((len(x_samples), 0)).tolist()
+    t_training = []
+    t_test = []
+    for i in range(0,len(x_samples)):
+        for j in range(0,lim_training):
+            x_training[i].append(x_samples[i][j])
+            t_training.append(t_expected[j])
+        for j in range(lim_training,len(x_samples[0])):
+            x_test[i].append(x_samples[i][j])
+            t_test.append(t_expected[j])
+    #x_training = x_samples[0:lim_training]
+    #x_test = x_samples[lim_training:-1]
+    #t_training = t_expected[0:lim_training]
+    #t_test = t_expected[lim_training:-1]
 
     # Inicializamos los pesos iniciales en 0.1
     num_muestras = len(x_training[0])
@@ -117,7 +128,7 @@ def main():
     print('Muestras x')
     print(x_training)
     print('Valores esperados')
-    print(t_expected)
+    print(t_test)
     print('Pesos iniciales')
     print(weights)
     print('Outputs obtenidos con los pesos')
