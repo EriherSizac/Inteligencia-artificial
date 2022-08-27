@@ -2,7 +2,7 @@
 Código que tiene la función de entrenar un perceptron
 Autor: Erick Hernández Silva
 Fecha de creación: 24/08/2022
-Última actualización: 24/08/2022
+Última actualización: 27/08/2022
 """
 import random
 
