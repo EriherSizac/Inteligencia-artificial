@@ -2,7 +2,11 @@
 Código que tiene la función de entrenar un perceptron
 Autor: Erick Hernández Silva
 Fecha de creación: 24/08/2022
+<<<<<<< Updated upstream
 Última actualización: 27/08/2022
+=======
+Última actualización: 29/08/2022
+>>>>>>> Stashed changes
 """
 import random
 
@@ -19,7 +23,7 @@ weights = []
 # Learning rate con default 0.5
 learning_rate = 3
 # Porcentaje de datos de entrenamiento
-training_data = .7
+training_data = .5
 
 def read_txt(file):
     """
@@ -171,5 +175,6 @@ def main():
             correctas += 1
         else:
             incorrectas += 1
-    print(correctas, ' ', incorrectas, ' ', correctas/incorrectas)
+    accuracy = (correctas * 100 )/ len(x_test[0])
+    print(correctas, ' ', incorrectas, ' ', accuracy)
 main()
