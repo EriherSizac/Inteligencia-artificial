@@ -6,11 +6,11 @@ Fecha de creación: 24/08/2022
 Última actualización: 27/08/2022
 =======
 Última actualización: 29/08/2022
->>>>>>> Stashed changes
 """
 import random
 
 import numpy as np
+import pandas as pd
 
 # Lista con todos los vectores de resultados de cada x
 x_samples = []
@@ -25,44 +25,33 @@ learning_rate = 3
 # Porcentaje de datos de entrenamiento
 training_data = .5
 
-def read_txt(file):
+def read_csv(file):
     """
     Función que lee el archivo de inputs y regresa todas las entradas
     :return: todas las entradas en una lista
     """
-    # Procesamos los datos del txt
-    with open(file+'.txt') as f:
-        # Lista con todas las lineas del texto parseadas a numero
-        entries = []
-        for line in f.readlines():
-            # Lista de numeros temporal para almacenar cada linea por separado
-            numbers = []
-            for number in line.split(','):
-                if float(number) == 0.0:
-                    numbers.append(-1.0)
-                else:
-                    numbers.append(float(number))
-            entries.append(numbers)
-    return entries
+    # Procesamos los datos del csv
+    df = pd.read_csv(file+'.csv')
+    return df
 
 
 
-def calcular_outputs(x, weights):
+def calcular_outputs(df, weights):
     """
-    Función que calcula los outputs con la función signo
-    :param x_samples: las muestras de x
-    :param weights: los pesos de las muestras
+    Función que calcula los outputs
+    :param df: dataframe sobre el que vamos a calcular los outputs
+    :param weights: un array de pesos
     :return:
     """
     outputs = []
     # Calculamos los outputs con nuestra función signo
-    number_of_samples = len(x)
+    number_of_samples = df.shape[1]
     sample_index = 0
-    for iteration in range(0, len(x[0])):
+    for iteration in range(0, df.shape[0]):
         temp_list_x = []
         temp_list_w = []
         for sample in range(0,number_of_samples):
-            temp_list_x.append(x[sample][sample_index])
+            temp_list_x.append([sample][sample_index])
             temp_list_w.append(weights[sample][sample_index])
         sample_index += 1
         # Sumamos y multiplicamos
@@ -90,51 +79,26 @@ def calcular_pesos(weights, x, t_expected, outputs):
 def main():
     import pandas as pd
     # Hacemos el setup inicial
-    entries = read_txt(input('Nombre del archivo: '))
-    # Colocamos los valores en sus respectivas entradas
-    x_samples = entries[0:-2]
-    t_expected = entries[-2]
-    learning_rate = entries[-1]
+    df = read_csv(input('Nombre del archivo: '))
+    learning_rate = input('Introduce el learning rate: ')
+    training_percentage = int(input('Introduce el porcentaje de los datos que quieres usar como entrenamiento (Ejemplo: 70): '))
+    training_percentage /= 100
 
-    # Hacemos un shuffle a las listas
-    df_t = pd.DataFrame(x_samples).transpose()
-    df_t = pd.concat([df_t, pd.DataFrame(t_expected)], axis=1)
-    # Se hace el shuffle y se resetean los indices
-    df_t = df_t.sample(frac=1).reset_index(drop=True)
-
-    # Lo enviamos a las listas de nuevo
-    x_samples = df_t.iloc[:, 0:len(x_samples)].transpose().values.tolist()
-    t_expected = df_t.iloc[:, len(x_samples):].values.tolist()
-    temp = []
-    # Cambiamos nuevamente la lista de valores de t
-    for each in t_expected:
-        temp.append(each[0])
-    t_expected = temp
-
+    # Se hace el shuffle a los datos y se resetean los indices
+    df = df.sample(frac=1).reset_index(drop=True)
     # Separamos las muestras de entrenamiento y prueba
-    lim_training = int(len(x_samples[0])*training_data)
-    print(lim_training)
-    x_training = np.empty((len(x_samples), 0)).tolist()
-    x_test = np.empty((len(x_samples), 0)).tolist()
-    t_training = []
-    t_test = []
-    for i in range(0,len(x_samples)):
-        for j in range(0,lim_training):
-            x_training[i].append(x_samples[i][j])
-        for j in range(lim_training,len(x_samples[0])):
-            x_test[i].append(x_samples[i][j])
-    for k in range(0, lim_training):
-        t_training.append(t_expected[k])
-        t_test.append(t_expected[k])
+    lim_training = int(df.shape[0] * training_percentage)
+
+    df_training = df.iloc[:lim_training]
+    df_test = df.iloc[lim_training:]
 
 
-    # Inicializamos los pesos iniciales en 0.1
-    num_muestras = len(x_training[0])
-    num_variables_x = len(x_training)
-    weights = [[0.1] * num_muestras] * (num_variables_x)
-    # Inicializamos los cambios en los pesos en ceros
-    delta_weights = [[0.0] * num_muestras] * (num_variables_x)
-    outputs = calcular_outputs(x_training, weights)
+    # Inicialiamos los pesos iniciales en 0.1
+    weights = pd.Series([0.1] * (df_training.shape[1]-1))
+    print(weights)
+
+
+    outputs = calcular_outputs(df_training, weights)
     # Comenzamos a hacer las corridas hasta que t = o
     if outputs != t_expected:
         while outputs != t_training:
