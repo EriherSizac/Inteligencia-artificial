@@ -116,7 +116,6 @@ def main():
     df = read_csv('test')
     learning_rate = 0.3
     training_percentage = 70
-    desired_acc = 70
     training_percentage /= 100
 
     # Se hace el shuffle a los datos y se resetean los indices
@@ -141,16 +140,22 @@ def main():
     outputs = calcular_outputs(df_training, weights)
     # Comenzamos a hacer las corridas hasta que t = o
     if outputs.tolist() != t_training.tolist():
+        accuracies = []
         accuracy = ((outputs == t_training).sum() * 100) / t_training.shape[0]
-        while accuracy <= desired_acc:
+        cycle = True
+        while cycle:
             weights = calcular_pesos(weights,learning_rate, t_training, outputs,df_training)
             outputs = calcular_outputs(df_training,weights)
             """print(outputs.head())
             print(t_training.head())"""
             accuracy = ((outputs == t_training).sum() * 100) / t_training.shape[0]
-            print(accuracy)
+            accuracies.append(accuracy)
+            for nac in accuracies:
+                if accuracies.count(nac) > 6:
+                    cycle = False
+                    print("Max accuracy reached with training sample: ", nac)
     test = calcular_outputs(df_test, weights)
     print('======== RESULTADOS DEL TESTING =============')
-    accuracy = ((test == t_test).sum() * 100) / t_test.shape[0]
-    print('Accuracy: ', accuracy)
+    accuracy = ((test == t_test.reset_index(drop=True)).sum() * 100) / t_test.shape[0]
+    print('Accuracy with test sample: ', accuracy)
 main()
