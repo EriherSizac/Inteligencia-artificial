@@ -154,6 +154,7 @@ def main():
                 if accuracies.count(nac) > 6:
                     cycle = False
                     print("Max accuracy reached with training sample: ", nac)
+                    break
     test = calcular_outputs(df_test, weights)
     print('======== RESULTADOS DEL TESTING =============')
     accuracy = ((test == t_test.reset_index(drop=True)).sum() * 100) / t_test.shape[0]
