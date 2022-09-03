@@ -110,12 +110,12 @@ def calcular_pesos(w,learning_rate,t,o,x):
 def main():
     import pandas as pd
     # Hacemos el setup inicial
-    """df = read_csv(input('Nombre del archivo: '))
-    learning_rate = input('Introduce el learning rate: ')
-    training_percentage = int(input('Introduce el porcentaje de los datos que quieres usar como entrenamiento (Ejemplo: 70): '))"""
-    df = read_csv('test')
+    df = read_csv(input('Nombre del archivo: '))
+    learning_rate = float(input('Introduce el learning rate: '))
+    training_percentage = int(input('Introduce el porcentaje de los datos que quieres usar como entrenamiento (Ejemplo: 70): '))
+    """df = read_csv('test')
     learning_rate = 0.3
-    training_percentage = 70
+    training_percentage = 70"""
     training_percentage /= 100
 
     # Se hace el shuffle a los datos y se resetean los indices
