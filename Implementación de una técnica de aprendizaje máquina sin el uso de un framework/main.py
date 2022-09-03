@@ -38,46 +38,13 @@ def read_csv(file):
     df.replace(0, -1, inplace=True)
     return df
 
-
-
-"""def calcular_outputs(df, weights):
-    """""""
-    Función que calcula los outputs
-    :param df: dataframe sobre el que vamos a calcular los outputs
-    :param weights: un array de pesos
-    :return:
-    """"""
-    outputs = []
-    # Calculamos los outputs con nuestra función signo
-    number_of_samples = df.shape[1]
-    sample_index = 0
-    for iteration in range(0, df.shape[0]):
-        temp_list_x = []
-        temp_list_w = []
-        for sample in range(0,number_of_samples):
-            temp_list_x.append(df[sample][sample_index])
-            temp_list_w.append(weights[sample])
-        sample_index += 1
-        # Sumamos y multiplicamos
-        temp_sum = 0
-        for i in range(0, len(temp_list_x)):
-            temp_sum += temp_list_x[i] * temp_list_w[i]
-        outputs.append(float(np.sign(temp_sum)))
-    return outputs
-
-def calcular_pesos(weights, x, t_expected, outputs):
-    import pandas as pd
-    global learning_rate
-    temp_weights_x = np.empty((len(x), 0)).tolist()
-    for i in range(0, len(x)):
-        #for j in range(0, df.shape[0]):
-        for j in range(0, len(x[0])):
-            # Python vainilla
-            temp_weights_x[i].append(weights[i][j] + (learning_rate * (t_expected[j] - outputs[j]) * x[i][j]))
-            # Usando dataframes
-            #temp_weights_x[i].append(df['w_'+str(i)][j] + (learning_rate * (df['t'][j] - df['o'][j]) * df['x_'+str(i)][j]))
-    return temp_weights_x"""
 def calcular_outputs(x,w):
+    """
+    Funcion que calcula los outputs con los pesos dados
+    :param x: la matriz de entrada
+    :param w: el vector de pesos
+    :return: un vector de resultados
+    """
     result = []
     x= x.to_numpy()
     w = pd.DataFrame(w).transpose()
