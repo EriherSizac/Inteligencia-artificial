@@ -80,10 +80,12 @@ def main():
     df = read_csv(input('Nombre del archivo: '))
     learning_rate = float(input('Introduce el learning rate: '))
     training_percentage = int(input('Introduce el porcentaje de los datos que quieres usar como entrenamiento (Ejemplo: 70): '))
-    """df = read_csv('test')
-    learning_rate = 0.3
-    training_percentage = 70"""
     training_percentage /= 100
+    epochs = None
+    try:
+        epochs = round(float(input('Introduce el número de epocas que quieres usar, deja vacío para calcular pesos hasta la convergencia: ')))
+    except:
+        epochs = None
 
     # Se hace el shuffle a los datos y se resetean los indices
     df = df.sample(frac=1).reset_index(drop=True)
@@ -110,11 +112,10 @@ def main():
         accuracies = []
         accuracy = ((outputs == t_training).sum() * 100) / t_training.shape[0]
         cycle = True
+        current_epoch = 0
         while cycle:
             weights = calcular_pesos(weights,learning_rate, t_training, outputs,df_training)
             outputs = calcular_outputs(df_training,weights)
-            """print(outputs.head())
-            print(t_training.head())"""
             accuracy = ((outputs == t_training).sum() * 100) / t_training.shape[0]
             accuracies.append(accuracy)
             for nac in accuracies:
@@ -122,6 +123,10 @@ def main():
                     cycle = False
                     print("Max accuracy reached with training sample: ", nac)
                     break
+            current_epoch += 1
+            if epochs!= None and current_epoch >= epochs:
+                print('Max epochs reached.')
+                break
     test = calcular_outputs(df_test, weights)
     print('======== RESULTADOS DEL TESTING =============')
     accuracy = ((test == t_test.reset_index(drop=True)).sum() * 100) / t_test.shape[0]
