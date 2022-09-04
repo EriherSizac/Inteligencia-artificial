@@ -86,7 +86,6 @@ def main():
         epochs = round(float(input('Introduce el número de epocas que quieres usar, deja vacío para calcular pesos hasta la convergencia: ')))
     except:
         epochs = None
-
     # Se hace el shuffle a los datos y se resetean los indices
     df = df.sample(frac=1).reset_index(drop=True)
     # Separamos las muestras de entrenamiento y prueba
@@ -127,6 +126,8 @@ def main():
             if epochs!= None and current_epoch >= epochs:
                 print('Max epochs reached.')
                 break
+    print('========= PESOS =========')
+    print(weights.to_list())
     test = calcular_outputs(df_test, weights)
     print('======== RESULTADOS DEL TESTING =============')
     accuracy = ((test == t_test.reset_index(drop=True)).sum() * 100) / t_test.shape[0]
