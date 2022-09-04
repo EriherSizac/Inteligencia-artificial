@@ -132,4 +132,7 @@ def main():
     print('======== RESULTADOS DEL TESTING =============')
     accuracy = ((test == t_test.reset_index(drop=True)).sum() * 100) / t_test.shape[0]
     print('Accuracy with test sample: ', accuracy)
+    # Calculo del mse
+    mse =((test - t_test.reset_index(drop=True)) ** 2).mean(axis=None)
+    print('Mean squareerror: ', mse)
 main()
