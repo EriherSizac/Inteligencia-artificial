@@ -13,6 +13,8 @@ import numpy as np
 import pandas as pd
 
 # Lista con todos los vectores de resultados de cada x
+from matplotlib import pyplot as plt
+
 x_samples = []
 # Lista con todos los valores esperados t
 t_expected = []
@@ -135,4 +137,12 @@ def main():
     # Calculo del mse
     mse =((test - t_test.reset_index(drop=True)) ** 2).mean(axis=None)
     print('Mean squareerror: ', mse)
+    # Grafica de predichos vs esperados
+    plt.figure(figsize=(10,10))
+    plt.plot(t_test.reset_index(drop=True), label='Valores esperados')
+    plt.plot(test.reset_index(drop=True), label='Valores predichos')
+    plt.legend()
+    plt.xlabel('Entrada')
+    plt.ylabel('Resultado')
+    plt.show()
 main()
