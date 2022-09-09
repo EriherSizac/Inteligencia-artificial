@@ -1,4 +1,5 @@
 import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
@@ -26,6 +27,10 @@ if __name__ == '__main__':
     # Configuración del usuario
     # Nombre del dataset con extension a usar
     dataset_name = input('Ingresa el nombre del csv a usar: ')
+    # Abrimos el csv y lo guardamos en un DataFrame
+    df = open(dataset_name + '.csv')
+    # Imprimimos las columnas
+    print(f'Estas son las columnas del dataset: \n {df.columns}')
     # Columna de resultados Y
     y_column = input('Nombre de la columna de resultados del data set \n¿Qué es lo que quieres '
                      'predecir?: ')
@@ -34,8 +39,6 @@ if __name__ == '__main__':
                       'Deja vacío para usar todas menos '
                       'la columna y: ')
     x_columns = x_columns.split(',')
-    # Abrimos el csv y lo guardamos en un DataFrame
-    df = open(dataset_name + '.csv')
     # Hacemos split de los datos de entrenamiento y de prueba
     xTrain, xTest, yTrain, yTest = data_to_split(df, y_column, x_columns)
     # Añadimos las constantes a las X de train y test
@@ -49,4 +52,11 @@ if __name__ == '__main__':
     print(model.summary())
     # Mostramos el MSE de los resultados
     print('Mean squared error: ', mean_squared_error(yTest, results))
-
+    # Grafica de predichos vs esperados
+    plt.figure(figsize=(10, 10))
+    plt.plot(yTest.reset_index(drop=True), label='Valores esperados')
+    plt.plot(results.reset_index(drop=True), label='Valores predichos')
+    plt.legend()
+    plt.xlabel('Entrada')
+    plt.ylabel('Resultado')
+    plt.show()
