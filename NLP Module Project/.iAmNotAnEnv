@@ -1,0 +1,11 @@
+# NER CONFIG
+# Number of samples used to train the ner model, set to 0 to use the full dataset
+N_EXAMPLES_TO_TRAIN=100
+
+# The number of epochs used to train the ner model
+NER_EPOCHS=15
+NER_LEARNING_RATE=0.5
+
+# RAPID API KEY
+X_RAPID_API_KEY=""
+
