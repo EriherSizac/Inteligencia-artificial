@@ -4,26 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="639a2a9a-a419-4bdd-a354-0d4d5a118943" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.iAmNotAnEnv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/NLP Module Project.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/File.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/NER.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/SentimentAnalysis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Classes/Translate.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/ner_dev.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/ner_test.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/ner_train.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run_me.py" afterDir="false" />
-    </list>
+    <list default="true" id="639a2a9a-a419-4bdd-a354-0d4d5a118943" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
