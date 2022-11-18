@@ -13,12 +13,17 @@ load_dotenv()
 N_EXAMPLES_TO_TRAIN = int(os.environ.get('N_EXAMPLES_TO_TRAIN'))
 NER_EPOCHS = int(os.environ.get('NER_EPOCHS'))
 
-class NER():
-    def __init__(self):
+
+# For this and other classes, see the naming conventions: https://google.github.io/styleguide/pyguide.html#316-naming
+# some things are UPPER which shouldnt be, etc 
+
+class NER:
+    def __init__(self): # Would create some helper functions here with good names to make this more readable! :) 
         if N_EXAMPLES_TO_TRAIN != 0:
             # We create the new file with the training data
             with open('./datasets/ner_train.txt', encoding='utf8') as file:
                 train_sample = file.readlines()[0:N_EXAMPLES_TO_TRAIN]
+                # nit: would do with open() here as well, rather than manual open and close
                 new_file = open('./datasets/ner_train_do.txt', 'w', encoding='utf8')
                 for line in train_sample:
                     new_file.write(line)
@@ -79,8 +84,8 @@ class NER():
             use_crf=True,
             allow_unk_predictions=True
         )
-        self.LEARNING_RATE = os.environ.get('NER_LEARNING_RATE=0.5')
-        self.LOSS_PATH = './resources/taggers/example-ner/loss.tsv'
+        self.LEARNING_RATE = os.environ.get('NER_LEARNING_RATE=0.5') # you shouldn't need the stuff after the =, that should be the returned value of the call! 
+        self.LOSS_PATH = './resources/taggers/example-ner/loss.tsv' # nit: usually paths should be put as private constants at the top of the file, like _LOSS_FILE_PATH_NAME. or passed in as args, whatever makes sense for the context. 
 
 
     def train(self):
