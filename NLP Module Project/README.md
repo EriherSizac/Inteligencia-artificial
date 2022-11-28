@@ -30,7 +30,7 @@ This model can not be configured.
 
 - `N_EXAMPLES_TO_TRAIN` is a parameter used to let the model know how many examples it will used to train. This automatically creates a new file with the desired examples.
 - `NER_EPOCHS` is a parameter usted to let the model know how many epoch it will use to train.
-- `NER_LEARNING_RATE` is the basically the learning rate the ner model will use to train.
+- `NER_LEARNING_RATE` is basically the learning rate the ner model will use to train.
 
 ## Translation Model
 
