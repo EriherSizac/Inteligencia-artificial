@@ -59,4 +59,4 @@ However, you can install them from console using `pip install -r requirements.tx
 
 # Testing the models
 
-You can test all the models by running the `run_me.py` file using your favorite IDE or by typing `python run_me.py` in console. This will script will guide you step by step through each model and will display relevant information after finishing each model.
+You can test all the models by running the `run_me.py` file using your favorite IDE or by typing `python run_me.py` in console. This script will guide you step by step through each model and will display relevant information after finishing each model.
