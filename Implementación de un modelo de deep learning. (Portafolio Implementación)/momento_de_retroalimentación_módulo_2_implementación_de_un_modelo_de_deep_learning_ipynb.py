@@ -85,7 +85,13 @@ for image_batch, labels_batch in train:
   print(labels_batch.shape)
   break
 
-"""#Configurando el dataset
+"""# Sobre el dataset
+
+El dataset está conformado por 3 clases: Shoe, Sandal y Boot. Cada clase tiene un conjunto de 5000 imágenes, así no tendremos problemas de desbalanceo de clases.
+Cada imagen tiene 3 canales ya que viene en RGB y tienen un tamaño de 100x100 pixeles.
+Se puede conseguir el dataset completo [aquí](https://www.kaggle.com/datasets/hasibalmuzdadid/shoe-vs-sandal-vs-boot-dataset-15k-images).
+
+#Configurando el dataset
 Necesitamos configurar nuestro dataset para obtener los datos desde el búfer del disco y evitar un bloqueo durante la escritura o lectura.
 
 Usaremos Dataset.cache para mantener las imágenes en la memoria después de la primera época para evitar un cuello de botella durante el entrenamiento.
@@ -363,4 +369,3 @@ Finalmente, 20 épocas fueron justas para que el accuracy de entrenamiento y el 
 
 # Para guardar el modelo.
 # model.save("/content/drive/MyDrive/Apuntes/7mo semestre/")
-
