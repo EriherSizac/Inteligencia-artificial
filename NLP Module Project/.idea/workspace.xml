@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="639a2a9a-a419-4bdd-a354-0d4d5a118943" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.iAmNotAnEnv" beforeDir="false" afterPath="$PROJECT_DIR$/.iAmNotAnEnv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Translate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Translate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/NER.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Ner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_me.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_me.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +43,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.run_me">
-    <configuration name="NER" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="Ner" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="NLP Module Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -53,7 +55,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\Sistema\Documentos\GitHub\Inteligencia-artificial\NLP Module Project\Classes\NER.py" />
+      <option name="SCRIPT_NAME" value="D:\Sistema\Documentos\GitHub\Inteligencia-artificial\NLP Module Project\Classes\Ner.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -108,7 +110,7 @@
       <list>
         <item itemvalue="Python.run_me" />
         <item itemvalue="Python.Translate" />
-        <item itemvalue="Python.NER" />
+        <item itemvalue="Python.Ner" />
       </list>
     </recent_temporary>
   </component>
@@ -127,7 +129,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Classes/NER.py</url>
+          <url>file://$PROJECT_DIR$/Classes/Ner.py</url>
           <line>41</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
@@ -142,7 +144,7 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Classes/NER.py</url>
+          <url>file://$PROJECT_DIR$/Classes/Ner.py</url>
           <line>62</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>

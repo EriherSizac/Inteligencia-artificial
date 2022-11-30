@@ -1,5 +1,5 @@
 from Classes.SentimentAnalysis import SentimentAnalysis
-from Classes.NER import NER
+from Classes.Ner import Ner
 from Classes.Translate import Translator
 
 print("======================= TESTING SENTIMENT ANALYSIS ===========================")
@@ -9,9 +9,9 @@ SA.predict("./datasets/tiny_movie_reviews_dataset.txt")
 input("Press ENTER to continue to next model")
 
 print()
-print("======================= NER ===========================")
+print("======================= Ner ===========================")
 print("Do not forget to change sample size in .env file.")
-ner = NER()
+ner = Ner()
 ner.train()
 ner.plot()
 input("Press ENTER to continue to next model")

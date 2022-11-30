@@ -6,9 +6,9 @@
 
 We are using a pre-trained model from [HuggingFace](https://huggingface.co/) which uses transformers library to create a pipeline and assign a label. We have a dataset with x number of movie reviews and we can classify those reviews as possitive or negative.
 
-## NER (Named Entity Recognition)
+## Ner (Named Entity Recognition)
 
-This NER model is trained with a ******big****** dataset of tweets. Once the model is trained, some files regarding the performance of the model will be saved in a folder named `resources` and a plot showing the loss of the training data and dev data will be shown. You can see the the result of training through the whole dataset in the image below.
+This Ner model is trained with a ******big****** dataset of tweets. Once the model is trained, some files regarding the performance of the model will be saved in a folder named `resources` and a plot showing the loss of the training data and dev data will be shown. You can see the the result of training through the whole dataset in the image below.
 
 ![NERplot.jpg](NERplot.jpg)
 
@@ -26,7 +26,7 @@ This project is configured using an `.env` file which structure can be seen in t
 
 This model can not be configured.
 
-## NER Model
+## Ner Model
 
 - `N_EXAMPLES_TO_TRAIN` is a parameter used to let the model know how many examples it will used to train. This automatically creates a new file with the desired examples.
 - `NER_EPOCHS` is a parameter usted to let the model know how many epoch it will use to train.

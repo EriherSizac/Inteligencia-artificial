@@ -1,4 +1,4 @@
-# NER CONFIG
+# Ner CONFIG
 # Number of samples used to train the ner model, set to 0 to use the full dataset
 N_EXAMPLES_TO_TRAIN=100
 
