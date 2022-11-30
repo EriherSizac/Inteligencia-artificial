@@ -1,3 +1,4 @@
 class File():
     def __init__(self, path):
-        self.lines = open(path).readlines()
+        with open(path) as file:
+            self.lines = file.readlines()
