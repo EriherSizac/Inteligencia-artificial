@@ -3,14 +3,14 @@ import json
 import requests
 from dotenv import load_dotenv
 from nltk.translate.bleu_score import sentence_bleu
-
+import numpy as np
 
 class Translator:
     load_dotenv()
 
     def __init__(self, data_en, data_es):
         self.API_KEY = os.environ.get('X_RAPID_API_KEY')
-        data_en = open(data_en, 'r',encoding='utf8')
+        data_en = open(data_en, 'r', encoding='utf8')
         self.data_en = data_en.readlines()
         data_es = open(data_es, 'r', encoding='utf8')
         self.data_es = data_es.readlines()
@@ -65,17 +65,17 @@ class Translator:
         }
 
         response = requests.request("POST", url, json=payload, headers=headers)
-        response = response.text.replace('"','')[1:-1].split(',')
+        # The API sends a string wrong formatted instead of a JSON, so we have to delete all the '"' characters
+        # And then we have to split the string using the ',' character to create the formatted JSONs.
+        response = response.text.replace('"', '')[1:-1].split(',')
         return response
 
     def score_model(self):
-        import numpy as np
         model_1 = []
         print('I am translating, please wait...')
         for i in range(len(self.data_en)):
             self.data_en[i] = self.data_en[i].strip('\n')
             self.data_es[i] = self.data_es[i].strip('\n')
-
 
         for i in range(len(self.data_en)):
             translated = self.translate_plus(self.data_en[i])
@@ -87,7 +87,6 @@ class Translator:
         m1_score = np.average(model_1_score)
         m2_score = np.average(model_2_score)
         print(f'M1: {m1_score} \nM2:{m2_score}')
-
 
 
 if __name__ == '__main__':
